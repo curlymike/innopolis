@@ -1,2 +1,2 @@
-# innopolis
+# Innopolis
 Innopolis JavaEE homeworks

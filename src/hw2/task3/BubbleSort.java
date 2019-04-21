@@ -1,7 +1,5 @@
 package hw2.task3;
 
-import java.util.List;
-
 public class BubbleSort implements Sorter {
 
   @Override

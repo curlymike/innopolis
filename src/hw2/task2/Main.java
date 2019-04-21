@@ -19,15 +19,9 @@ public class Main {
       if (k < 0) {
         throw new ArithmeticException();
       } else {
-        double sqrt = Math.sqrt(k);
-        int sqrt2 = (int) sqrt;
-        if (sqrt2 * sqrt2 == k) {
+        double q = Math.sqrt(k);
+        if ((int) q * (int) q == k) {
           System.out.println(k);
-        }
-        if ((int) sqrt * (int) sqrt == k) {
-          System.out.println(k + " +++");
-        } else {
-          System.out.println(k + " ---");
         }
       }
     }

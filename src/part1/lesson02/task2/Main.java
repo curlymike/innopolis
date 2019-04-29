@@ -1,4 +1,4 @@
-package hw2.task2;
+package part1.lesson02.task2;
 
 import java.security.SecureRandom;
 

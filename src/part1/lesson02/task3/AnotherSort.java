@@ -1,11 +1,16 @@
-package hw2.task3;
+package part1.lesson02.task3;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class AnotherSort implements Sorter {
   @Override
   public void sort(Main.Person[] arr) {
     Arrays.sort(arr);
+  }
+
+  public static <T> Object test(List<? super T> list) {
+    return list.get(0);
   }
 
 }

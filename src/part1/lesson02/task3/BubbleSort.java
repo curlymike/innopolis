@@ -1,4 +1,4 @@
-package hw2.task3;
+package part1.lesson02.task3;
 
 public class BubbleSort implements Sorter {
 

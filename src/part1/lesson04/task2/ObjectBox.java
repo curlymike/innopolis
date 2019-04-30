@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 
 public class ObjectBox {
   private final List list = new ArrayList();
-  //private final List<Integer> list2 = new ArrayList<>();
 
   public boolean addObject(Object obj) {
     return list.add(obj);
@@ -24,6 +23,30 @@ public class ObjectBox {
     return list.remove(obj);
   }
 
-  public void dump() {
+  public String dump() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("ObjectBox[");
+    for (int i = 0; i < list.size(); i++) {
+      if (i > 0) {
+        sb.append(',');
+      }
+      sb.append(list.get(i));
+    }
+    sb.append(']');
+    return sb.toString();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ObjectBox box = (ObjectBox) o;
+    return list.equals(box.list);
+  }
+
+  @Override
+  public int hashCode() {
+    return list.hashCode();
+  }
+
 }

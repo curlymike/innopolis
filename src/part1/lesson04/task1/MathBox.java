@@ -64,7 +64,6 @@ public class MathBox {
 
   @Override
   public int hashCode() {
-    list.equals(null);
     return list.hashCode();
   }
 

@@ -13,17 +13,14 @@ import java.util.stream.Collectors;
  */
 
 public class MathBox extends ObjectBox {
-//  private final List<Number> list;
   private final ObjectBox box = new ObjectBox();
 
   public MathBox(Number[] numbers) {
-
     Arrays.asList(numbers).stream().filter(n -> n != null).forEach((n) -> {
       if (n != null) {
         box.addObject(n);
       }
     });
-
   }
 
   /***
@@ -65,25 +62,23 @@ public class MathBox extends ObjectBox {
     return box.deleteObject(n);
   }
 
-//  @Override
-//  public boolean equals(Object o) {
-//    if (this == o) return true;
-//    if (o == null || getClass() != o.getClass()) return false;
-//    MathBox mathBox = (MathBox) o;
-//    return list.equals(mathBox.list);
-//  }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    MathBox mathBox = (MathBox) o;
+    return box.equals(mathBox.box);
+  }
 
-//  @Override
-//  public int hashCode() {
-//    list.equals(null);
-//    return list.hashCode();
-//  }
+  @Override
+  public int hashCode() {
+    return box.hashCode();
+  }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    Iterator<Number> iter = box.iterator();
-    sb.append('[');
+    sb.append("MathBox[");
     for (int i = 0; i < box.size(); i++) {
       if (i > 0) {
         sb.append(',');
@@ -91,24 +86,7 @@ public class MathBox extends ObjectBox {
       sb.append(((Number) box.getObject(i)).doubleValue());
     }
     sb.append(']');
-    return "MathBox" + sb;
-  }
-
-  private String number(Object obj) {
-    if (obj instanceof Byte) {
-      return ((Byte) obj).toString();
-    } else if (obj instanceof Short) {
-      return ((Short) obj).toString();
-    } else if (obj instanceof Integer) {
-      return ((Integer) obj).toString();
-    } else if (obj instanceof Long) {
-      return ((Long) obj).toString();
-    } else if (obj instanceof Float) {
-      return ((Float) obj).toString();
-    } else if (obj instanceof Double) {
-      return ((Double) obj).toString();
-    }
-    return obj.toString();
+    return sb.toString();
   }
 
 }

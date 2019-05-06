@@ -1,4 +1,4 @@
-package part1.lesson07.task1;
+package part1.lesson07.task01;
 
 import org.junit.Test;
 

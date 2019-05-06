@@ -1,12 +1,4 @@
-package part1.lesson07.task1;
-
-import org.junit.Test;
-
-import java.math.BigInteger;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+package part1.lesson07.task01;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

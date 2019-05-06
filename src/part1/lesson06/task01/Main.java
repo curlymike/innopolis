@@ -20,7 +20,7 @@ import java.util.TreeSet;
 
 public class Main {
 
-  static final String DIR = "C:\\Users\\Mike\\YandexDisk\\myStuff\\Java_Innopolis\\data\\lesson07\\task01";
+  static final String DIR = "C:\\Temp\\Innopolis\\lesson07\\task01";
   static final String FILE_IN = "file1.txt";
   static final String FILE_OUT = "file1_out.txt";
 
@@ -41,7 +41,7 @@ public class Main {
       while ((line = br.readLine()) != null) {
         // В одну строку или цикл - как лучше?
         // words.addAll(Arrays.asList(line.split("\\s+")));
-        // Разбираю её на слова
+        // Разбиваю её на слова, они разделяются пробелом или запятой.
         for (String str : line.split("[\\s,]+")) {
           // Добавляю слова в коллекцию
           words.add(str);
@@ -52,7 +52,7 @@ public class Main {
       return;
     }
 
-    // Печатаем слова в консоль
+    // Печатаем слова в консоль (на всякий случай)
     words.stream().forEach(System.out::println);
 
     // Записываем слова в файл-результат.

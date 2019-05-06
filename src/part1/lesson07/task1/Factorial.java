@@ -3,6 +3,33 @@ package part1.lesson07.task1;
 import java.math.BigInteger;
 
 public class Factorial {
+
+  private final int number;
+  private final BigInteger value;
+
+  public Factorial(int number, BigInteger value) {
+    this.number = number;
+    this.value = value;
+  }
+
+  /***
+   * Getters
+   */
+
+  public int getNumber() {
+    return number;
+  }
+
+  public BigInteger getValue() {
+    return value;
+  }
+
+  /**
+   * Static methods
+   * @param n
+   * @return
+   */
+
   public static BigInteger compute(int n) {
     return compute(1, n);
   }

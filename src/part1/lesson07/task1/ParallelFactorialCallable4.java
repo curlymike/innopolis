@@ -18,13 +18,14 @@ public class ParallelFactorialCallable4 implements Callable<Map.Entry<Integer, B
 
   @Override
   public Map.Entry<Integer, BigInteger> call() throws Exception {
+    // FIXME: this is totally wrong!
+    // ForkJoinPool is not the same as ExecutorService'es from Executors class
     int quarter = number / 4;
     Future<BigInteger> f1 = ForkJoinPool.commonPool().submit(() -> Factorial.compute(1 * quarter + 1, 2 * quarter));
     Future<BigInteger> f2 = ForkJoinPool.commonPool().submit(() -> Factorial.compute(2 * quarter + 1, 3 * quarter));
     Future<BigInteger> f3 = ForkJoinPool.commonPool().submit(() -> Factorial.compute(3 * quarter + 1, number));
 
     return new AbstractMap.SimpleEntry(number,
-//              Factorial.compute(half).multiply(Factorial.compute(half + 1, number)
               Factorial.compute(quarter).multiply(f1.get()).multiply(f2.get()).multiply(f3.get()));
   }
 }

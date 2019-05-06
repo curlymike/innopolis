@@ -16,6 +16,7 @@ public class ParallelFactorialCallable implements Callable<Map.Entry<Integer, Bi
 
   @Override
   public Map.Entry<Integer, BigInteger> call() throws Exception {
+    // FIXME: ForkJoinPool is not the same as ExecutorService'es from Executors class
     int half = number / 2;
     Future<BigInteger> f = ForkJoinPool.commonPool().submit(() -> Factorial.compute(half + 1, number));
 

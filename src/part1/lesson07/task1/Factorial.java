@@ -25,7 +25,7 @@ public class Factorial {
   }
 
   /**
-   * Static methods
+   * Вычисляет факториал числа n
    * @param n
    * @return
    */

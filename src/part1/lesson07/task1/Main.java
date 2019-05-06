@@ -13,6 +13,14 @@ public class Main {
 
   static long time = 0;
 
+  public static int[] numbers() {
+    //return new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 32};
+    //return new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    //return randomNumbers(40, 20_000);
+    //return new int[]{11746,12150,18240,17511,14632,17321,7206,8247,8769,8446,15076,12696,18932,15998,19244,16460,1143,6924,7687,5,226,14821,2592,5423,5451,6305,17535,7664,12456,15510,7646,19515,12366,11344,7002};
+    return new int[]{10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 400, 500};
+  }
+
   public static void main(String[] args) throws Exception {
     test();
   }
@@ -22,12 +30,7 @@ public class Main {
   // no threads to process "spawned" subtasks, so the task which
   // "spawned" the subtasks waits forever for their .get() to return.
   public static void test4() throws Exception {
-    //int[] numbers = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 32};
-    //int[] numbers = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-    //int[] numbers = randomNumbers(40, 20_000);
-    //int[] numbers = new int[]{11746,12150,18240,17511,14632,17321,7206,8247,8769,8446,15076,12696,18932,15998,19244,16460,1143,6924,7687,5,226,14821,2592,5423,5451,6305,17535,7664,12456,15510,7646,19515,12366,11344,7002};
-
-    int[] numbers = new int[]{10, 20, 30, 40, 50, 100, 150, 200, 250, 300, 400, 500};
+    int[] numbers = numbers();
 
     //ExecutorService es = Executors.newWorkStealingPool();
     //ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());

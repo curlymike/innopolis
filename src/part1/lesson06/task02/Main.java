@@ -1,13 +1,10 @@
 package part1.lesson06.task02;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.util.Random;
 
 /***
  * Занятие 6. Пакет java.io и работа с ресурсами - ДЗ_5
@@ -72,7 +69,15 @@ public class Main {
   }
 
   /***
+   * Данный метод генерирует бессмысленный текст длинной не менее
+   * n символов "подмешивая" в него слова из массива words с
+   * вероятностью probability и записывает его в OutputStream.
    *
+   * @param os поток для записи.
+   * @param length ограничение на общую длинну текста, обычно выходит немного больше.
+   * @param words массив слов для подмещивания к случайно сгенерированным словам.
+   * @param probability вероятность вхождения слова из words в предложение.
+   * @throws IOException
    */
 
   public static void writeText(OutputStream os, int length, String[] words, int probability) throws IOException {

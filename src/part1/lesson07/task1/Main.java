@@ -14,10 +14,13 @@ public class Main {
   static long time = 0;
 
   public static void main(String[] args) throws Exception {
-    test4();
+    test();
   }
 
   // ExperimentalFactorialCallable (with injected ExecutorService)
+  // UPD: does not work, every thread picks a task, and there are
+  // no threads to process "spawned" subtasks, so the task which
+  // "spawned" the subtasks waits forever for their .get() to return.
   public static void test4() throws Exception {
     //int[] numbers = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 32};
     //int[] numbers = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
@@ -151,11 +154,11 @@ public class Main {
     //int[] numbers = new int[]{19584};
     //int[] numbers = new int[]{19584,18667};
 
-    //ExecutorService es = Executors.newWorkStealingPool();
+    ExecutorService es = Executors.newWorkStealingPool();
     //ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     //ExecutorService es = Executors.newFixedThreadPool(2);
     //ExecutorService es = Executors.newFixedThreadPool(4);
-    ExecutorService es = Executors.newSingleThreadExecutor();
+    //ExecutorService es = Executors.newSingleThreadExecutor();
 
     Map<Integer, Future<Map.Entry<Integer, BigInteger>>> futures = new TreeMap<>();
 

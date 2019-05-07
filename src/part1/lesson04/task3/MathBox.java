@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
  * - Создать метод, который получает на вход Integer и если такое значение есть в коллекции, удаляет его.
  */
 
-public class MathBox extends ObjectBox {
+public class MathBox<T extends Number> extends ObjectBox {
   private final ObjectBox box = new ObjectBox();
 
-  public MathBox(Number[] numbers) {
+  public MathBox(T[] numbers) {
     Arrays.asList(numbers).stream().filter(n -> n != null).forEach((n) -> {
       if (n != null) {
         box.addObject(n);
@@ -30,7 +30,8 @@ public class MathBox extends ObjectBox {
 
   public double summator() {
     double sum = 0.0;
-    Iterator<Number> iter = box.iterator();
+
+    Iterator<T> iter = box.iterator();
     while (iter.hasNext()) {
       sum += iter.next().doubleValue();
     }
@@ -58,7 +59,7 @@ public class MathBox extends ObjectBox {
    * @return
    */
 
-  public boolean remove(Integer n) {
+  public boolean remove(T n) {
     return box.deleteObject(n);
   }
 

@@ -8,6 +8,13 @@ import java.nio.file.Paths;
 
 public class Serializer {
 
+  /***
+   * Сериализует объект subj в файл file
+   * @param subj
+   * @param file
+   * @throws IOException
+   */
+
   public static void serialize(Subject subj, String file) throws IOException {
     try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(Paths.get(file)))) {
       dos.writeInt(subj.getNumber());
@@ -16,6 +23,13 @@ public class Serializer {
       dos.writeLong(subj.getValue());
     }
   }
+
+  /***
+   * Десериализует объект класса Subject из файла file
+   * @param file
+   * @return
+   * @throws IOException
+   */
 
   public static Subject deSerialize(String file) throws IOException {
     try (DataInputStream dis = new DataInputStream(Files.newInputStream(Paths.get(file)))) {

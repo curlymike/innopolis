@@ -1,6 +1,8 @@
-package part1.lesson08.task01;
+package part1.lesson08.task02;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Subject implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -9,6 +11,8 @@ public class Subject implements Serializable {
   private final boolean status;
   private final String description;
   private final long value;
+
+  private final List<String> list = new ArrayList<>();
 
   public Subject(int number, boolean status, String description, long value) {
     this.number = number;
@@ -33,17 +37,12 @@ public class Subject implements Serializable {
     return value;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+  public boolean addToList(String str) {
+    return list.add(str);
+  }
 
-    Subject subject = (Subject) o;
-
-    if (number != subject.number) return false;
-    if (status != subject.status) return false;
-    if (value != subject.value) return false;
-    return description != null ? description.equals(subject.description) : subject.description == null;
+  public boolean removeFromList(String str) {
+    return list.remove(str);
   }
 
   @Override
@@ -53,6 +52,7 @@ public class Subject implements Serializable {
         ", status=" + status +
         ", description='" + description + '\'' +
         ", value=" + value +
+        ", list=" + list +
         '}';
   }
 }

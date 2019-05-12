@@ -1,7 +1,5 @@
 package part1.lesson08.task01;
 
-import java.io.*;
-
 /***
  * Необходимо разработать класс, реализующий следующие методы:
  *   void serialize (Object object, String file);
@@ -13,35 +11,21 @@ import java.io.*;
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    fiddle();
-  }
+    String filePathStr = "data/lesson08/task01_subject.bin";
 
-  public static void fiddle(Object obj) throws Exception {
-    System.out.println("Serializable: " + obj instanceof Serializable);
-  }
+    Subject subj = new Subject(1, true, "Test subject #1", 100_000L);
 
-  public static void fiddle() throws Exception {
-    //Subject subj = new Subject(1, "Test");
-    Object subj = new Subject(1, "Test");
+    Serializer.serialize(subj, filePathStr);
+    Subject subj2 = Serializer.deSerialize(filePathStr);
 
-    System.out.println("Serializable: " + subj instanceof Serializable);
-    //fiddle(subj);
-
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-      oos.writeObject(subj);
-    }
-
-    //System.out.write(baos.toByteArray());
-    //System.out.println();
-    System.out.println("------------");
-
-    try (ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()))) {
-      Subject subj2 = (Subject) ois.readObject();
-      System.out.println(subj2);
-    }
-
-
+    System.out.println(subj);
+    System.out.println("---");
+    System.out.println(subj2);
+    System.out.println("---");
+    System.out.println("equals: " + subj.equals(subj));
+    System.out.println("---");
+    System.out.println(System.identityHashCode(subj));
+    System.out.println(System.identityHashCode(subj2));
   }
 
 }

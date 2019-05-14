@@ -1,11 +1,18 @@
-package part1.lesson04.task3;
+package part1.lesson04.task01;
 
 import org.junit.Test;
-import part1.lesson04.task3.MathBox;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MathBoxTest {
+
+  @Test
+  public void test001() {
+    Object obj = new Object();
+    //Object[] arr = new Number[]{1, 2, obj, 3, 4, 5};
+    //MathBox box = new MathBox(arr);
+    //assertThat(box.summator()).isEqualTo(15);
+  }
 
   @Test
   public void summator001() {

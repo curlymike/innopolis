@@ -1,13 +1,8 @@
-package part1.lesson04.task3;
+package part1.lesson04.task03;
 
 import org.junit.Test;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class MathBoxTests {
 

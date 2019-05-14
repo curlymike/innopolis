@@ -1,4 +1,4 @@
-package part1.lesson04.task3;
+package part1.lesson04.task01;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,15 +12,13 @@ import java.util.stream.Collectors;
  * - Создать метод, который получает на вход Integer и если такое значение есть в коллекции, удаляет его.
  */
 
-public class MathBox<T extends Number> extends ObjectBox {
-  private final ObjectBox box = new ObjectBox();
+public class MathBox {
+  private final List<Number> list;
 
-  public MathBox(T[] numbers) {
-    Arrays.asList(numbers).stream().filter(n -> n != null).forEach((n) -> {
-      if (n != null) {
-        box.addObject(n);
-      }
-    });
+  public MathBox(Number[] numbers) {
+    list = new ArrayList<>(
+      Arrays.asList(numbers).stream().filter(n -> n != null).collect(Collectors.toCollection(TreeSet::new))
+    );
   }
 
   /***
@@ -29,13 +27,7 @@ public class MathBox<T extends Number> extends ObjectBox {
    */
 
   public double summator() {
-    double sum = 0.0;
-
-    Iterator<T> iter = box.iterator();
-    while (iter.hasNext()) {
-      sum += iter.next().doubleValue();
-    }
-    return sum;
+    return list.stream().mapToDouble(Number::doubleValue).sum();
   }
 
   /***
@@ -44,11 +36,9 @@ public class MathBox<T extends Number> extends ObjectBox {
    */
 
   public void splitter(Number div) {
-    // Это правильно или нет смысла заводить переменную?
-    double divDouble = div.doubleValue();
-    for (int i = 0; i < box.size(); i++) {
-      if (box.getObject(i) != null) {
-        box.setObject(i, ((Number) box.getObject(i)).doubleValue() / divDouble);
+    for (int i = 0; i < list.size(); i++) {
+      if (list.get(i) != null) {
+        list.set(i, new Double(list.get(i).doubleValue() / div.doubleValue()));
       }
     }
   }
@@ -59,8 +49,8 @@ public class MathBox<T extends Number> extends ObjectBox {
    * @return
    */
 
-  public boolean remove(T n) {
-    return box.deleteObject(n);
+  public boolean remove(Integer n) {
+    return list.remove(n);
   }
 
   @Override
@@ -68,26 +58,16 @@ public class MathBox<T extends Number> extends ObjectBox {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     MathBox mathBox = (MathBox) o;
-    return box.equals(mathBox.box);
+    return list.equals(mathBox.list);
   }
 
   @Override
   public int hashCode() {
-    return box.hashCode();
+    return list.hashCode();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("MathBox[");
-    for (int i = 0; i < box.size(); i++) {
-      if (i > 0) {
-        sb.append(',');
-      }
-      sb.append(((Number) box.getObject(i)).doubleValue());
-    }
-    sb.append(']');
-    return sb.toString();
+    return "MathBox" + list;
   }
-
 }

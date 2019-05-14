@@ -1,8 +1,7 @@
-package part1.lesson04.task2;
+package part1.lesson04.task02;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 /***
  * Задание
@@ -24,16 +23,7 @@ public class ObjectBox {
   }
 
   public String dump() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("ObjectBox[");
-    for (int i = 0; i < list.size(); i++) {
-      if (i > 0) {
-        sb.append(',');
-      }
-      sb.append(list.get(i));
-    }
-    sb.append(']');
-    return sb.toString();
+    return "ObjectBox" + list;
   }
 
   @Override

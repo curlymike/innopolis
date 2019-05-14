@@ -1,7 +1,6 @@
 package part1.lesson04;
 
 import org.junit.Test;
-import part1.lesson04.task1.MathBox;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,7 +1,6 @@
-package part1.lesson04.task3;
+package part1.lesson04.task03;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
@@ -14,26 +13,22 @@ import java.util.stream.Stream;
  * - Должен быть метод dump, выводящий содержимое коллекции в строку.
  */
 
-public class ObjectBox {
-  private final List list = new ArrayList();
+public class ObjectBox<T extends Number> {
+  private final List<T> list = new ArrayList();
 
-  public boolean addObject(Object obj) {
+  public boolean addObject(T obj) {
     return list.add(obj);
   }
 
-  public boolean addAllObjects(Collection collection) {
-    return list.addAll(collection);
-  }
-
-  public Object getObject(int index) {
+  public T getObject(int index) {
     return list.get(index);
   }
 
-  public Object setObject(int index, Object obj) {
+  public T setObject(int index, T obj) {
     return list.set(index, obj);
   }
 
-  public boolean deleteObject(Object obj) {
+  public boolean deleteObject(T obj) {
     return list.remove(obj);
   }
 
@@ -41,15 +36,36 @@ public class ObjectBox {
     return list.size();
   }
 
-  public Iterator iterator() {
+  public Iterator<T> iterator() {
     return list.iterator();
   }
 
-  public Stream stream() {
+  public Stream<T> stream() {
     return list.stream();
   }
 
-  public void dump() {
-    System.out.println("ObjectBox" + list);
+  public String dump() {
+    return list.toString();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ObjectBox objectBox = (ObjectBox) o;
+    return list.equals(objectBox.list);
+  }
+
+  @Override
+  public int hashCode() {
+    return list.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "ObjectBox{" +
+        "list=" + list +
+        '}';
+  }
+
 }

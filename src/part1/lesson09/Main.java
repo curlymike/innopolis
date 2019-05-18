@@ -30,13 +30,16 @@ public class Main {
   public static void main(String[] args) throws Exception {
 
     Path rootPath = Paths.get("data/lesson09");
-    Path javaFilePath = rootPath.resolve("SomeClass.java");
+    Path javaFilePath = rootPath.resolve("part1/lesson09/task01/SomeClass.java");
 
     Scanner s = new Scanner(System.in);
 
     try (BufferedWriter bw = Files.newBufferedWriter(javaFilePath)) {
+      bw.write("package part1.lesson09.task01;\n");
       bw.write("public class SomeClass implements part1.lesson09.Worker {\n");
       bw.write("public void doWork() {\n");
+
+      //System.out.println("Hello!");
 
       while (true) {
         String line = s.nextLine();
@@ -56,7 +59,7 @@ public class Main {
     jc.run(null, null, null, javaFilePath.toAbsolutePath().toString());
 
     URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { rootPath.toUri().toURL() });
-    Class<?> cls = Class.forName("SomeClass", true, classLoader);
+    Class<?> cls = Class.forName("part1.lesson09.task01.SomeClass", true, classLoader);
     Worker instance = (Worker) cls.newInstance();
     instance.doWork();
   }

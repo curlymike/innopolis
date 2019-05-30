@@ -4,8 +4,8 @@ import java.io.IOException;
 
 public class ClientListener implements Runnable {
 
-  private static Client client;
-  private static Server server;
+  private final Client client;
+  private final Server server;
 
   public ClientListener(Server server, Client client) {
     this.client = client;

@@ -64,6 +64,20 @@ public class ClientTest {
     assertThat(m.invoke(null, "Hello-hello-")).isEqualTo(false);
   }
 
+  @Test
+  public void isValidNameTest009() throws Exception {
+    Method m = Client.class.getDeclaredMethod("isValidName", String.class);
+    m.setAccessible(true);
+    assertThat(m.invoke(null, "Миха")).isEqualTo(true);
+  }
+
+  @Test
+  public void isValidNameTest010() throws Exception {
+    Method m = Client.class.getDeclaredMethod("isValidName", String.class);
+    m.setAccessible(true);
+    assertThat(m.invoke(null, "миха")).isEqualTo(true);
+  }
+
 
 
 }

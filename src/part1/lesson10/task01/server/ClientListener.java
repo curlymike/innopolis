@@ -1,43 +1,42 @@
 package part1.lesson10.task01.server;
 
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Observable;
 
-public class ClientListener extends Observable implements Runnable {
+public class ClientListener implements Runnable {
 
   private static Client client;
-  private InputStream inputStream;
+  private static Server server;
 
-  public ClientListener(Client client) {
+  public ClientListener(Server server, Client client) {
     this.client = client;
+    this.server = server;
   }
 
-  // socket.getInputStream()
   @Override
   public void run() {
 
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-      //--- test ----
-      //InputStream is = socket.getInputStream();
-      //is.read();
-      reader.readLine();
-      //--- /test ----
-//      askForName(writerToClient, reader);
-      String message;
-      while ((message = reader.readLine()) != null) {
-        System.out.println("Server.Listener: " + message);
-//        server.update(this, Event.MESSAGE, message);
+    try {
+      client.askForName();
+      server.update(client, Event.CLIENT_CONNECTED);
+
+      while (!Thread.currentThread().isInterrupted()) {
+        // TODO: make use of client.getConnection().ready()
+        //       returns true if guaranteed not to block.
+        server.update(client, Event.MESSAGE, client.getConnection().readLine());
       }
 
     } catch (IOException e) {
-      e.printStackTrace();
+      client.setStatus(Client.Status.DISCONNECTED);
+      server.update(client, Event.CLIENT_DISCONNECTED);
+    } finally {
+      try {
+        client.getConnection().close();
+      } catch (IOException e) {
+        // TODO: Log that
+      }
     }
 
-    System.out.println("Server.SocketWorker exit");
+    System.out.println("LOG: Server.SocketWorker exit");
   }
 
 }

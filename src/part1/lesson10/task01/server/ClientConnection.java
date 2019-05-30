@@ -1,18 +1,33 @@
 package part1.lesson10.task01.server;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientConnection implements AutoCloseable {
   private Socket socket;
   private BufferedWriter writerToClient;
+  private BufferedReader readerFromClient;
   private volatile boolean isClosed = false;
 
-  public ClientConnection(Socket socket) {
+  public ClientConnection(Socket socket) throws IOException {
     this.socket = socket;
+    init();
+  }
+
+  private synchronized void init() throws IOException {
+    readerFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+  }
+
+  public boolean ready() throws IOException {
+    return readerFromClient.ready();
+  }
+
+  public int read() throws IOException {
+    return readerFromClient.read();
+  }
+
+  public String readLine() throws IOException {
+    return readerFromClient.readLine();
   }
 
   // Этот метод вызывается методом askForName() (возможно неоднократно)

@@ -27,8 +27,10 @@ public class ConsoleClient {
             System.out.println(line);
           }
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
           if (isWorking) {
+            System.out.println("Reader exception");
             e.printStackTrace();
           }
         }
@@ -41,13 +43,6 @@ public class ConsoleClient {
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
           Scanner s = new Scanner(System.in);
-
-//          InputStreamReader isr = new InputStreamReader(System.in);
-//          if (isr.ready()) {
-//
-//          } else {
-//            LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(50));
-//          }
 
           while (isWorking && !socket.isClosed()) {
             if (s.hasNextLine()) {
@@ -67,6 +62,7 @@ public class ConsoleClient {
           }
 
         } catch (IOException e) {
+          System.out.println("Writer exception");
           e.printStackTrace();
         }
 
@@ -82,21 +78,8 @@ public class ConsoleClient {
         LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(100));
       }
 
-
-//      Scanner s = new Scanner(System.in);
-//
-//      while (true) {
-//        String line = s.nextLine();
-//        if ("exit".equals(line) || "quit".equals(line)) {
-//          break;
-//        }
-//        if (line.length() > 0) {
-//          writer.write(line + '\n');
-//          writer.flush();
-//        }
-//      }
-
     } catch (IOException e) {
+      System.out.println("Socket exception");
       e.printStackTrace();
     }
   }

@@ -10,7 +10,6 @@ public class Client {
   private String name;
   Server server;
   private ClientConnection connection;
-  private final long timeCreated = System.currentTimeMillis();
 
   // Статус будет запрашиваться из другого потока
   private volatile Status status = Status.INIT;
@@ -75,12 +74,17 @@ public class Client {
   public void askForName() throws IOException {
     status = Status.WAITING_FOR_NAME;
     StringBuilder sb = new StringBuilder();
+    long timeout = System.currentTimeMillis() + Server.NAME_TIMEOUT_MS;
     while (true) {
       connection.send("Введите имя под которым вы будете видны в чате: ");
       while (true) {
+        if (System.currentTimeMillis() > timeout) {
+          connection.send("Превышено время ожидания имени пользователя.");
+          server.update(this, Event.LOGIN_TIMEOUT);
+        }
         if (connection.ready()) {
           char n = (char) connection.read();
-          if (n == '\n') {
+          if (n == '\n' || n == -1) {
             break;
           } else {
             sb.append(n);
@@ -111,7 +115,7 @@ public class Client {
   }
 
   public void close() throws IOException {
-
+    connection.close();
   }
 
 }

@@ -14,7 +14,6 @@ public class ClientListener implements Runnable {
 
   @Override
   public void run() {
-
     try {
       client.askForName();
       server.update(client, Event.CLIENT_CONNECTED);
@@ -26,17 +25,18 @@ public class ClientListener implements Runnable {
       }
 
     } catch (IOException e) {
+      e.printStackTrace();
       client.setStatus(Client.Status.DISCONNECTED);
-      server.update(client, Event.CLIENT_DISCONNECTED);
     } finally {
       try {
         client.getConnection().close();
       } catch (IOException e) {
-        // TODO: Log that
+        e.printStackTrace();
+      } finally {
+        server.update(client, Event.CLIENT_DISCONNECTED);
       }
     }
-
-    System.out.println("LOG: Server.SocketWorker exit");
+    System.out.println("LOG: " + getClass().getSimpleName() + " exit");
   }
 
 }

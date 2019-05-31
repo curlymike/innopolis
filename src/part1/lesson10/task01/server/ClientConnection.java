@@ -5,8 +5,8 @@ import java.net.Socket;
 
 public class ClientConnection implements AutoCloseable {
   private Socket socket;
-  private BufferedWriter writerToClient;
-  private BufferedReader readerFromClient;
+  private BufferedWriter writer;
+  private BufferedReader reader;
   private volatile boolean isClosed = false;
 
   public ClientConnection(Socket socket) throws IOException {
@@ -15,19 +15,41 @@ public class ClientConnection implements AutoCloseable {
   }
 
   private synchronized void init() throws IOException {
-    readerFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
   }
+
+  /***
+   * Tells whether this stream is ready to be read. A buffered character stream is ready if the buffer is not empty, or if the underlying character stream is ready.
+   * @return True if the next read() is guaranteed not to block for input, false otherwise.
+   * @throws IOException
+   */
 
   public boolean ready() throws IOException {
-    return readerFromClient.ready();
+    ensureOpen();
+    return reader.ready();
   }
+
+  /***
+   * Reads a single character.
+   * @return The character read, as an integer in the range 0 to 65535 (0x00-0xffff), or -1 if the end of the stream has been reached
+   * @throws IOException
+   */
 
   public int read() throws IOException {
-    return readerFromClient.read();
+    ensureOpen();
+    return reader.read();
   }
 
+  /***
+   * Reads a line of text.
+   * @return A String containing the contents of the line, not including any line-termination characters, or null if the end of the stream has been reached
+   * @throws IOException
+   */
+
   public String readLine() throws IOException {
-    return readerFromClient.readLine();
+    ensureOpen();
+    return reader.readLine();
   }
 
   // Этот метод вызывается методом askForName() (возможно неоднократно)
@@ -35,11 +57,14 @@ public class ClientConnection implements AutoCloseable {
   // не должна этот метод вызывать. Сервер отправляет что-либо только
   // тем пользователям которые предоставили свое имя/ник.
   public synchronized void send(String message) throws IOException {
-    if (writerToClient == null) {
-      writerToClient = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-    }
-    writerToClient.write(message + '\n');
-    writerToClient.flush();
+    ensureOpen();
+    writer.write(message + '\n');
+    writer.flush();
+  }
+
+  private void ensureOpen() throws IOException {
+    if (reader == null || writer == null)
+      throw new IOException("Connection closed");
   }
 
   @Override
@@ -48,14 +73,19 @@ public class ClientConnection implements AutoCloseable {
       return;
     }
     try {
-      writerToClient.close();
+      writer.close();
     } finally {
-      writerToClient = null;
+      writer = null;
       try {
-        socket.close();
+        reader.close();
       } finally {
-        socket = null;
-        isClosed = true;
+        reader = null;
+        try {
+          socket.close();
+        } finally {
+          socket = null;
+          isClosed = true;
+        }
       }
     }
   }

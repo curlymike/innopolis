@@ -6,9 +6,11 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class Server extends Thread {
-  public static final String DEFAULT_HOST = "127.0.0.1";
+  //public static final String DEFAULT_HOST = "127.0.0.1";
+  public static final String DEFAULT_HOST = "0.0.0.0";
   public static final int PORT_NUMBER = 33333;
   public static final int SO_TIMEOUT_MS = 250;
+  public static final int NAME_TIMEOUT_MS = 5_000;
 
   //private final Set<Client> clients = new HashSet<>();
   private final Set<Client> clients = ConcurrentHashMap.newKeySet();
@@ -52,19 +54,38 @@ public class Server extends Thread {
         break;
 
       case CLIENT_CONNECTED:
-        broadcastMessage(client.name() + " присоединился к чату.");
+        System.out.println("LOG: " + client.name() + " присоединился к чату.");
+        broadcastMessage(client.name() + " присоединился к чату.", client);
+        sendMessage(client, "Добро пожаловать в чат!");
+        sendMessage(client, "Отправьте \"/help\" - чтобы получить информацию о доступных командах.");
+        sendMessage(client, "Для отправки личного сообщения наберите");
+        sendMessage(client, "@<имя пользователя> <сообщение>");
+        sendMessage(client, "---------------------------------------");
         break;
 
       case CLIENT_DISCONNECTED:
-        broadcastMessage(client.name() + " покинул чат.");
-        try {
-          client.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        } finally {
-          clients.remove(client);
+        closeAndRemove(client);
+        if (client.hasName()) {
+          broadcastMessage(client.name() + " покинул чат.");
+          System.out.println("LOG: " + client.name() + " покинул чат.");
+        } else {
+          System.out.println("LOG: пользователь отключился не залогинившись.");
         }
         break;
+      case LOGIN_TIMEOUT:
+        closeAndRemove(client);
+        System.out.println("LOG: превышено время ожидания имени пользователя.");
+        break;
+    }
+  }
+
+  private void closeAndRemove(Client client) {
+    try {
+      client.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      clients.remove(client);
     }
   }
 
@@ -100,8 +121,8 @@ public class Server extends Thread {
           }
         } else {
           try {
-            recipient.send(client.name() + " (личное): " + parts[1]);
-            client.send(message);
+            recipient.send("> " + client.name() + " (личное): " + parts[1]);
+            client.send("> " + message);
           } catch (IOException e) {
             e.printStackTrace();
             try {
@@ -130,17 +151,15 @@ public class Server extends Thread {
           case "info":
           case "help":
             client.send("------------------------");
-            client.send("list - показать список участников");
-            client.send("exit - покинуть чат");
-            client.send("help");
-            client.send("info - данная справка");
+            client.send("/list - показать список участников");
+            client.send("/help или /info - данная справка");
             client.send("------------------------");
             break;
           case "list":
             client.send("------------------------");
-            clients.stream().sorted(Comparator.comparing(Client::name)).forEach((c) -> {
+            clients.stream().filter(Client::isOnline).sorted(Comparator.comparing(Client::name)).forEach((c) -> {
               try {
-                client.send(c.name());
+                client.send(c.name() + (c.equals(client) ? " (вы)" : ""));
               } catch (IOException e) {
                 e.printStackTrace();
               }
@@ -156,15 +175,29 @@ public class Server extends Thread {
       return;
     }
 
-    broadcastMessage(client.name() + ": " + message);
+    broadcastMessage("> " + client.name() + ": " + message);
+  }
+
+  private void sendMessage(Client client, String message) {
+    try {
+      client.send(message);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private synchronized void broadcastMessage(String message) {
+    broadcastMessage(message, null);
+  }
+
+  private synchronized void broadcastMessage(String message, Client skip) {
     for (Client client : clients) {
-      if (client.isOnline()) {
+      if (client.isOnline() && !client.equals(skip)) {
         try {
           client.send(message);
         } catch (IOException e) {
+          e.printStackTrace();
+        } catch (Exception e) {
           e.printStackTrace();
         }
       }
@@ -177,6 +210,8 @@ public class Server extends Thread {
     try {
       serverSocket = new ServerSocket(PORT_NUMBER, 0, address);
       serverSocket.setSoTimeout(SO_TIMEOUT_MS);
+
+      System.out.println("Сервер запущен: " + address + ':' + PORT_NUMBER);
 
       while (isRunning) {
         try {

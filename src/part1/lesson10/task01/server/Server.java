@@ -10,18 +10,21 @@ public class Server extends Thread {
   public static final String DEFAULT_HOST = "0.0.0.0";
   public static final int PORT_NUMBER = 33333;
   public static final int SO_TIMEOUT_MS = 250;
-  public static final int NAME_TIMEOUT_MS = 5_000;
+  public static final int NAME_TIMEOUT_MS = 30_000;
 
-  //private final Set<Client> clients = new HashSet<>();
   private final Set<Client> clients = ConcurrentHashMap.newKeySet();
   private final ExecutorService executorService = Executors.newCachedThreadPool();
 
   private final InetAddress address;
-  private boolean isRunning = true;
+  private volatile boolean isRunning = true;
 
   public static void main(String[] args) throws Exception {
     Server server = new Server(InetAddress.getByName(DEFAULT_HOST));
     server.start();
+    Scanner s = new Scanner(System.in);
+    while (!"exit".equals(s.nextLine())) {
+    }
+    server.shutdown();
     server.join();
   }
 
@@ -29,13 +32,19 @@ public class Server extends Thread {
     this.address = address;
   }
 
+  /***
+   * Добавляет обект Client в коллекцию клиентов
+   * @param client
+   */
+
   public void addClient(Client client) {
     clients.add(client);
   }
 
-  public void update(Client client, Event event) {
-    update(client, event, null);
-  }
+  /**
+   * Этот метод вызывается из основного цикла (метод run()) принимающего подключения.
+   * @param socket
+   */
 
   public void incomingConnection(Socket socket) {
     try {
@@ -46,6 +55,23 @@ public class Server extends Thread {
       e.printStackTrace();
     }
   }
+
+  /**
+   * При помощи этого метода ClientListener уведомляет сервер о событиях.
+   * @param client
+   * @param event
+   */
+
+  public void update(Client client, Event event) {
+    update(client, event, null);
+  }
+
+  /***
+   * При помощи этого метода ClientListener уведомляет сервер о событиях.
+   * @param client
+   * @param event
+   * @param str
+   */
 
   public void update(Client client, Event event, String str) {
     switch (event) {
@@ -72,6 +98,7 @@ public class Server extends Thread {
           System.out.println("LOG: пользователь отключился не залогинившись.");
         }
         break;
+
       case LOGIN_TIMEOUT:
         closeAndRemove(client);
         System.out.println("LOG: превышено время ожидания имени пользователя.");
@@ -88,6 +115,12 @@ public class Server extends Thread {
       clients.remove(client);
     }
   }
+
+  /***
+   * Проверяет занято имя или нет
+   * @param name
+   * @return true|false
+   */
 
   public boolean nameIsTaken(String name) {
     return getClientByName(name) != null;
@@ -166,6 +199,9 @@ public class Server extends Thread {
             });
             client.send("------------------------");
             break;
+          case "exit":
+            update(client, Event.CLIENT_DISCONNECTED);
+            break;
           default:
             client.send("Ошибка: неизвестная команда.");
         }
@@ -204,6 +240,10 @@ public class Server extends Thread {
     }
   }
 
+  /**
+   * Основной цикл сервера, принимает входящие подключения
+   */
+
   @Override
   public void run() {
     ServerSocket serverSocket = null;
@@ -212,8 +252,9 @@ public class Server extends Thread {
       serverSocket.setSoTimeout(SO_TIMEOUT_MS);
 
       System.out.println("Сервер запущен: " + address + ':' + PORT_NUMBER);
+      System.out.println("Наберите exit для остановки сервера.");
 
-      while (isRunning) {
+      while (isRunning && !Thread.currentThread().isInterrupted()) {
         try {
           incomingConnection(serverSocket.accept());
           System.out.println("LOG: someone wants to join the chat.");
@@ -239,7 +280,12 @@ public class Server extends Thread {
 
   }
 
+  /***
+   * Останавливает сервер
+   */
+
   public void shutdown() {
+    broadcastMessage("Сервер останавливается, держитесь за поручни.");
     isRunning = false;
   }
 

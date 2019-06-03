@@ -14,6 +14,10 @@ public class Client {
   // Статус будет запрашиваться из другого потока
   private volatile Status status = Status.INIT;
 
+  /**
+   * Сервер рассылает сообщения только клиентам со статусом ONLINE
+   */
+
   public enum Status {
     INIT,
     WAITING_FOR_NAME,
@@ -26,40 +30,73 @@ public class Client {
     this.connection = connection;
   }
 
+  /**
+   * Возвращает объект ClientConnection данного клиента
+   * @return
+   */
+
   public ClientConnection getConnection() {
     return connection;
   }
+
+  /**
+   * Возвращает имя клиента
+   * @return
+   */
 
   public String name() {
     return name;
   }
 
+  /**
+   * Возвразает статус клиента
+   * @return
+   */
+
   public Status getStatus() {
     return status;
   }
+
+  /**
+   * Устанавливает статус клиента
+   * @return
+   */
 
   public void setStatus(Status status) {
     this.status = status;
   }
 
+  /**
+   * @return true - если клиент имеет статус ONLINE
+   */
+
   public boolean isOnline() {
     return status == Status.ONLINE;
   }
+
+  /**
+   * @return true - если клиент имеет имя (он его передал и сервер это имя принял)
+   */
 
   public boolean hasName() {
     return name != null;
   }
 
-  // MOVED
-  // Этот метод вызывается методом askForName() (возможно неоднократно)
-  // и пока имя не будет получено статус не будет ONLINE и нить сервера
-  // не должна этот метод вызывать. Сервер отправляет что-либо только
-  // тем пользователям которые предоставили свое имя/ник.
+  /**
+   * Этот метод передаёт строку message клиенту
+   * @param message
+   * @throws IOException
+   */
+
   public synchronized void send(String message) throws IOException {
     connection.send(message);
   }
 
-  // MOVED
+  /**
+   * Проверяет имя пользователя на соответствие заданным ограничениям
+   * @param name
+   * @return
+   */
   // Static легче тестировать
   private static boolean isValidName(String name) {
     return name != null
@@ -70,6 +107,11 @@ public class Client {
         && !"admin".equals(name.toLowerCase())
         && !"server".equals(name.toLowerCase());
   }
+
+  /**
+   * Запрашивает имя пользователя и проверяет его, блокирует выполнение до тех пор пока не будет получено валидное имя или пока не будет достигнуто ограничение по времени.
+   * @throws IOException
+   */
 
   public void askForName() throws IOException {
     status = Status.WAITING_FOR_NAME;
@@ -84,8 +126,13 @@ public class Client {
         }
         if (connection.ready()) {
           char n = (char) connection.read();
-          if (n == '\n' || n == -1) {
+          if (n == -1) {
             break;
+          }
+          if (n == '\n' || n == '\r') {
+            if (sb.length() > 0) {
+              break;
+            }
           } else {
             sb.append(n);
           }
@@ -113,6 +160,11 @@ public class Client {
 
     }
   }
+
+  /**
+   * Закрывает соединение с пользователем
+   * @throws IOException
+   */
 
   public void close() throws IOException {
     connection.close();

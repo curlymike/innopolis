@@ -52,10 +52,16 @@ public class ClientConnection implements AutoCloseable {
     return reader.readLine();
   }
 
-  // Этот метод вызывается методом askForName() (возможно неоднократно)
-  // и пока имя не будет получено статус не будет ONLINE и нить сервера
-  // не должна этот метод вызывать. Сервер отправляет что-либо только
-  // тем пользователям которые предоставили свое имя/ник.
+  /**
+   * Этот метод передаёт строку message клиенту.
+   * Метод вызывается методом askForName() (возможно неоднократно)
+   * и пока имя не будет получено статус не будет ONLINE и нить сервера
+   * не должна этот метод вызывать. Сервер отправляет что-либо только
+   * тем пользователям которые предоставили свое имя/ник.
+   * @param message
+   * @throws IOException
+   */
+
   public synchronized void send(String message) throws IOException {
     ensureOpen();
     writer.write(message + '\n');
@@ -66,6 +72,11 @@ public class ClientConnection implements AutoCloseable {
     if (reader == null || writer == null)
       throw new IOException("Connection closed");
   }
+
+  /**
+   * Закрывает клиентский сокет и ридеры
+   * @throws IOException
+   */
 
   @Override
   public synchronized void close() throws IOException {

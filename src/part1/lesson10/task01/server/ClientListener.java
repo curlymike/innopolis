@@ -19,14 +19,12 @@ public class ClientListener implements Runnable {
       server.update(client, Event.CLIENT_CONNECTED);
 
       while (!Thread.currentThread().isInterrupted()) {
-        // TODO: make use of client.getConnection().ready()
-        //       returns true if guaranteed not to block.
         server.update(client, Event.MESSAGE, client.getConnection().readLine());
       }
 
     } catch (IOException e) {
-      e.printStackTrace();
       client.setStatus(Client.Status.DISCONNECTED);
+      e.printStackTrace();
     } finally {
       try {
         client.getConnection().close();

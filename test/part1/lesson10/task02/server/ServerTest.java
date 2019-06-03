@@ -1,4 +1,4 @@
-package part1.lesson10.task01.server;
+package part1.lesson10.task02.server;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class ServerTest {
   Method processMessage() throws NoSuchMethodException {
     Method m = Server.class.getDeclaredMethod(
         "processMessage",
-        part1.lesson10.task01.server.Client.class,
+        part1.lesson10.task02.server.Client.class,
         String.class);
     m.setAccessible(true);
     return m;
@@ -102,7 +102,7 @@ public class ServerTest {
    * Mock Client
    */
 
-  class Client extends part1.lesson10.task01.server.Client {
+  class Client extends part1.lesson10.task02.server.Client {
     private String name;
     private boolean sendError;
 

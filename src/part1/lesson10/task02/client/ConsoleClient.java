@@ -1,6 +1,6 @@
-package part1.lesson10.task01.client;
+package part1.lesson10.task02.client;
 
-import part1.lesson10.task01.server.Server;
+import part1.lesson10.task02.server.Server;
 
 import java.io.*;
 import java.net.ConnectException;

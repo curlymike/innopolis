@@ -1,9 +1,8 @@
-package part1.lesson10.task01.server;
+package part1.lesson10.task02.server;
 
 import org.junit.Test;
 
 import java.lang.reflect.Method;
-import java.net.Socket;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

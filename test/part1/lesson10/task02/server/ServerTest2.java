@@ -1,4 +1,4 @@
-package part1.lesson10.task01.server;
+package part1.lesson10.task02.server;
 
 import org.junit.After;
 import org.junit.Before;
@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.sql.Time;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;

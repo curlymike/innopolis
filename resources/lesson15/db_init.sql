@@ -15,7 +15,7 @@ CREATE TABLE "user"
   login_ID         VARCHAR(64)             NOT NULL,
   city             VARCHAR(255)            NOT NULL,
   email            VARCHAR(255)            NOT NULL,
-  description      TEXT                    NOT NULL
+  description      TEXT DEFAULT ''
 );
 
 CREATE TYPE roles AS ENUM ('Administration', 'Clients', 'Billing');

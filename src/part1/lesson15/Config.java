@@ -1,33 +1,36 @@
 package part1.lesson15;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-  private static final String PROPS = "/resources/postgres.properties";
+  private static final String PROPS_FILE = "postgres.properties";
   private static final Config INSTANCE = new Config();
+
+  private final Properties props;
 
   public static Config get() {
     return INSTANCE;
   }
 
   private Config() {
-    try (InputStream is = Config.class.getResourceAsStream(PROPS)) {
-      Properties props = new Properties();
-      props.load(is);
-//      storage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"), props.getProperty("db.password"));
+    try (InputStream is = Config.class.getResourceAsStream(PROPS_FILE)) {
+      if (is != null) {
+        props = new Properties();
+        props.load(is);
+        if (!props.containsKey("database.url")) {
+          throw new IllegalStateException("В файле конфигурации отсутствует database.url " + PROPS_FILE);
+        }
+      } else {
+        throw new IOException("Невозможно загрузить файл конфигурации " + PROPS_FILE);
+      }
     } catch (IOException e) {
-      throw new IllegalStateException("Invalid config file " + PROPS);
+      throw new IllegalStateException("Невозможно загрузить файл конфигурации " + PROPS_FILE);
     }
   }
 
-//  public File getStorageDir() {
-//    return storageDir;
-//  }
-//
-//  public Storage getStorage() {
-//    return storage;
-//  }
+  public Properties getProperties() {
+    return props;
+  }
 }

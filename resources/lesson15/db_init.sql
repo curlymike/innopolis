@@ -15,7 +15,8 @@ CREATE TABLE "user"
   login_ID         VARCHAR(64)             NOT NULL,
   city             VARCHAR(255)            NOT NULL,
   email            VARCHAR(255)            NOT NULL,
-  description      TEXT DEFAULT ''
+  description      TEXT                    DEFAULT '',
+  UNIQUE(login_ID)
 );
 
 CREATE TYPE roles AS ENUM ('Administration', 'Clients', 'Billing');
@@ -24,7 +25,7 @@ CREATE TABLE role
 (
   id               SERIAL PRIMARY KEY,
   name             roles,
-  description      TEXT                 NOT NULL
+  description      TEXT DEFAULT ''
 );
 
 CREATE TABLE user_role
@@ -32,8 +33,14 @@ CREATE TABLE user_role
   id               SERIAL PRIMARY KEY,
   user_id          INTEGER REFERENCES "user" (id) ON DELETE CASCADE,
   role_id          INTEGER REFERENCES role (id) ON DELETE CASCADE,
-  UNIQUE (role_id, user_id)
+  UNIQUE (user_id, role_id)
 );
+
+---
+
+INSERT INTO role (name, description) VALUES ('Administration', 'Административный персонал');
+INSERT INTO role (name, description) VALUES ('Clients', 'Клиенты');
+INSERT INTO role (name, description) VALUES ('Billing', 'Биллинг');
 
 /*
 CREATE TABLE user_role_alternative

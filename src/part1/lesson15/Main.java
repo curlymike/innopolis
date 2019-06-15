@@ -1,6 +1,7 @@
 package part1.lesson15;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Objects;
 import java.util.Properties;
@@ -34,12 +35,12 @@ public class Main {
     DriverManager.registerDriver(new org.postgresql.Driver());
 
     printUsers();
-    System.out.println("---");
-    insertUsersBatch();
-    printUsers();
-    System.out.println("---");
-    printUserByLoginAndName("homer", "Homer");
-    printUserByLoginAndName("user3", "User 3");
+//    System.out.println("---");
+//    insertUsersBatch();
+//    printUsers();
+//    System.out.println("---");
+//    printUserByLoginAndName("homer", "Homer");
+//    printUserByLoginAndName("user3", "User 3");
 
 
 

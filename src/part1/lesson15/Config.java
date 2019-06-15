@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-  private static final String PROPS_FILE = "postgres.properties";
+  //private static final String PROPS_FILE = "postgres.properties";
+  private static final String PROPS_FILE = "/postgres.properties";
   private static final Config INSTANCE = new Config();
 
   private final Properties props;

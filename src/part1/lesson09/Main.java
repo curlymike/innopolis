@@ -23,34 +23,47 @@ import java.util.Scanner;
  * Файл SomeClass.java компилируется программой (в рантайме) в файл SomeClass.class.
  * Полученный файл подгружается в программу с помощью кастомного загрузчика
  * Метод, введенный с консоли, исполняется в рантайме (вызывается у экземпляра объекта подгруженного класса)
+ *
+ * Это можно копировать в консоль (содержимое метода doWork()):
+ * System.out.println("Hello there!");
+ * System.out.println("How are you?");
+ * System.out.println("По-русски тоже работает.");
+ *
  */
 
 public class Main {
 
   public static void main(String[] args) throws Exception {
     JavaCompiler jc = ToolProvider.getSystemJavaCompiler();
-    URL tempDirUrl = Main.class.getResource("temp");
+    Path tempDir = Paths.get("temp");
+    Path targetDir = Paths.get("temp/part1/lesson09");
 
     if (jc == null) {
       System.out.println("Невозможно получить объект компилятора.");
       return;
     }
-    if (tempDirUrl == null) {
+    if (!Files.exists(tempDir)) {
       System.out.println("Папка temp не существует.");
       return;
     }
 
-    Path javaFilePath = Paths.get(tempDirUrl.toURI()).resolve("SomeClass.java");
+    if (!Files.exists(targetDir)) {
+      try {
+        Files.createDirectories(targetDir);
+      } catch (IOException e) {
+        e.printStackTrace();
+        return;
+      }
+    }
+
+    Path javaFilePath = targetDir.resolve("SomeClass.java");
 
     Scanner s = new Scanner(System.in);
 
     try (BufferedWriter bw = Files.newBufferedWriter(javaFilePath)) {
-      bw.write("package part1.lesson09.temp;\n\n");
+      bw.write("package part1.lesson09;\n\n");
       bw.write("public class SomeClass implements part1.lesson09.Worker {\n\n");
       bw.write("\tpublic void doWork() {\n");
-
-      //System.out.println("Hello there!");
-      //System.out.println("How are you?");
 
       System.out.println("Введите содержимое метода doWork():");
 
@@ -69,8 +82,8 @@ public class Main {
 
     jc.run(null, null, null, javaFilePath.toAbsolutePath().toString());
 
-    URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { tempDirUrl });
-    Class<?> cls = Class.forName("part1.lesson09.temp.SomeClass", true, classLoader);
+    URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { tempDir.toUri().toURL() });
+    Class<?> cls = Class.forName("part1.lesson09.SomeClass", true, classLoader);
     Worker instance = (Worker) cls.newInstance();
     instance.doWork();
   }

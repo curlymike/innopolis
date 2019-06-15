@@ -1,5 +1,5 @@
 .idea
-data
 lib
 out
+target
 *.iml

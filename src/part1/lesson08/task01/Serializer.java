@@ -10,8 +10,8 @@ public class Serializer {
 
   /***
    * Сериализует объект subj в файл file
-   * @param subj
-   * @param file
+   * @param subj - объект который надо сериализовать
+   * @param file - файл куда записать сериализованный объект
    * @throws IOException
    */
 

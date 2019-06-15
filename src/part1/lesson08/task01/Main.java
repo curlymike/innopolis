@@ -1,5 +1,7 @@
 package part1.lesson08.task01;
 
+import java.io.IOException;
+
 /***
  * Необходимо разработать класс, реализующий следующие методы:
  *   void serialize (Object object, String file);
@@ -10,22 +12,28 @@ package part1.lesson08.task01;
 
 public class Main {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     String filePathStr = "data/lesson08/task01_subject.bin";
 
     Subject subj = new Subject(1, true, "Test subject #1", 100_000L);
 
-    Serializer.serialize(subj, filePathStr);
-    Subject subj2 = Serializer.deSerialize(filePathStr);
+    try {
+      Serializer.serialize(subj, filePathStr);
+      Subject subj2 = Serializer.deSerialize(filePathStr);
 
-    System.out.println(subj);
-    System.out.println("---");
-    System.out.println(subj2);
-    System.out.println("---");
-    System.out.println("equals: " + subj.equals(subj));
-    System.out.println("---");
-    System.out.println(System.identityHashCode(subj));
-    System.out.println(System.identityHashCode(subj2));
+      System.out.println(subj);
+      System.out.println("---");
+      System.out.println(subj2);
+      System.out.println("---");
+      System.out.println("equals: " + subj.equals(subj));
+      System.out.println("---");
+      System.out.println(System.identityHashCode(subj));
+      System.out.println(System.identityHashCode(subj2));
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
   }
 
 }

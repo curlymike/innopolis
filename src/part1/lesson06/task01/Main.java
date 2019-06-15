@@ -20,13 +20,9 @@ import java.util.TreeSet;
 
 public class Main {
 
-  static final String DIR = "C:\\Temp\\Innopolis\\lesson07\\task01";
-  static final String FILE_IN = "file1.txt";
-  static final String FILE_OUT = "file1_out.txt";
-
   public static void main(String[] args) {
-    Path fileIn = buildPath(FILE_IN);
-    Path fileOut = buildPath(FILE_OUT);
+    Path fileIn = Paths.get("data/lesson06/task01/file1.txt");
+    Path fileOut = Paths.get("data/lesson06/task01/file1_out.txt");
 
     // Слова должны быть отсортированы и не должны повторяться,
     // для такой задачи TreeSet - идеальный выбор.
@@ -67,18 +63,5 @@ public class Main {
     }
 
   }
-
-  /***
-   * Вспомогательный метод возвращающий объект Path
-   * для строки содержащей имя файла, предполагается
-   * что файл находится в папке DIR.
-   * @param fileName
-   * @return
-   */
-
-  public static Path buildPath(String fileName) {
-    return Paths.get(DIR).resolve(Paths.get(fileName));
-  }
-
 
 }

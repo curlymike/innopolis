@@ -1,13 +1,10 @@
 package part1.lesson06.task02;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.util.Random;
 
 /***
  * Занятие 6. Пакет java.io и работа с ресурсами - ДЗ_5
@@ -29,10 +26,10 @@ public class Main {
   static final SecureRandom RAND = new SecureRandom();
 
   public static void main(String[] args) throws Exception {
-    String path = "C:\\Temp\\Innopolis\\lesson07\\task02";
-    getFiles(path, 5, 2000, new String[]{"Hello", "Goodbye"}, 3);
+    String outputPath = "data/lesson06/task02";
+    getFiles(outputPath, 5, 2000, new String[]{"Hello", "Goodbye"}, 3);
     System.out.println("Все готово.");
-    System.out.println("Вайлы записаны по этому пути: " + path);
+    System.out.println("Вайлы записаны по этому пути: " + outputPath);
   }
 
   /***

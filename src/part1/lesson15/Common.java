@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Вспомогательные функции общие для нескольких пунктов ДЗ
+ */
+
 public class Common {
 
   public static final int ROLE_ADMINISTRATION = 1;
@@ -12,7 +16,7 @@ public class Common {
   public static final int ROLE_BILLING = 3;
 
   /***
-   * Удаляет пользователя по id
+   * Удаляет пользователя по id (не используется, но оставил для примера)
    * @param userId
    */
 
@@ -31,7 +35,7 @@ public class Common {
   }
 
   /***
-   * Удаляет пользователя по login_id
+   * Удаляет пользователя по login_id (не используется, но оставил для примера)
    * @param loginId
    */
 
@@ -82,13 +86,12 @@ public class Common {
         while (rs.next()) {
           System.out.println(
               rs.getInt("id") + "|" +
-                  rs.getString("name") + "|" +
-                  rs.getTimestamp("birthday") + "|" +
-                  rs.getString("login_id") + "|" +
-                  rs.getString("city") + "|" +
-                  rs.getString("email") + "|" +
-                  rs.getString("description")
-          );
+              rs.getString("name") + "|" +
+              rs.getTimestamp("birthday") + "|" +
+              rs.getString("login_id") + "|" +
+              rs.getString("city") + "|" +
+              rs.getString("email") + "|" +
+              rs.getString("description"));
         }
       }
 
@@ -116,10 +119,9 @@ public class Common {
         while (rs.next()) {
           System.out.println(
               rs.getInt("user_id") + "|" +
-                  rs.getString("user_name") + "|" +
-                  rs.getInt("role_id") + "|" +
-                  rs.getString("role_name")
-          );
+              rs.getString("user_name") + "|" +
+              rs.getString("role_name") + "|" +
+              rs.getInt("role_id"));
         }
       }
 

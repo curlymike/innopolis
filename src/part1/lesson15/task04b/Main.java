@@ -1,0 +1,96 @@
+package part1.lesson15.task04b;
+
+import part1.lesson15.Common;
+import part1.lesson15.DBConnect;
+
+import java.sql.*;
+
+/***
+ * ДЗ_13
+ *
+ * 4) Перевести connection в ручное управление транзакциями
+ *   b) Выполнить 2-3 SQL операции на ваше усмотрение (например, Insert в 3 таблицы – USER, ROLE, USER_ROLE) между sql операциями установить точку сохранения (SAVEPOINT A), намеренно ввести некорректные данные на последней операции, что бы транзакция откатилась к логической точке SAVEPOINT A
+ *
+ */
+
+public class Main {
+
+  static final String INSERT_USER_QUERY = "INSERT INTO \"user\" (name, birthday, login_id, city, email, description) VALUES(?, ?, ?, ?, ?, ?)";
+  static final String INSERT_ROLE_QUERY = "INSERT INTO user_role (user_id, role_id) VALUES(?, ?)";
+
+  public static void main(String[] args) throws Exception {
+    DriverManager.registerDriver(new org.postgresql.Driver());
+
+    Common.deleteAllUsers();
+
+    task4b();
+
+    Common.printUsers();
+    Common.countUsers();
+
+    System.out.println("------------");
+    System.out.println("Roles:");
+
+    Common.printRoles();
+
+  }
+
+  public static int task4aGetUserId(PreparedStatement psUser) throws SQLException {
+    try (ResultSet rs = psUser.getGeneratedKeys()) {
+      if (rs.next()) {
+        return rs.getInt(1);
+      }
+    }
+    throw new SQLException("Невозможно получить ID");
+  }
+
+  /***
+   *
+   */
+
+  public static void task4b() {
+    try (Connection conn = DBConnect.getConnection();
+         PreparedStatement psUser = conn.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
+         PreparedStatement psRole = conn.prepareStatement(INSERT_ROLE_QUERY)) {
+
+      conn.setAutoCommit(false);
+      Savepoint savepoint = conn.setSavepoint();
+
+      try {
+        psUser.setString(1, "User 4");
+        psUser.setTimestamp(2, Timestamp.valueOf("1985-03-01 00:00:00"));
+        psUser.setString(3, "user4");
+        psUser.setString(4, "Moscow");
+        psUser.setString(5, "user4@mail.ru");
+        psUser.setString(6, "User number four");
+        psUser.execute();
+
+        int userId = task4aGetUserId(psUser);
+
+        psRole.setInt(1, userId);
+        psRole.setInt(2, Common.ROLE_CLIENTS);
+        psRole.execute();
+
+        // Попытка повторно записать в таблицу user_role приведёт к ошибке
+        psRole.setInt(1, userId);
+        psRole.setInt(2, Common.ROLE_CLIENTS);
+        psRole.execute();
+
+        conn.commit();
+
+      } catch (SQLException e) {
+        conn.rollback(savepoint);
+        //e.printStackTrace();
+        System.out.println("------------------------");
+        System.out.println(e.getMessage());
+        System.out.println("------------------------");
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+
+
+}

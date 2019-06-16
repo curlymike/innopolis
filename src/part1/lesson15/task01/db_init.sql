@@ -36,11 +36,13 @@ CREATE TABLE user_role
   UNIQUE (user_id, role_id)
 );
 
+ALTER SEQUENCE user_role_id_seq RESTART WITH 100;
+
 ---
 
-INSERT INTO role (name, description) VALUES ('Administration', 'Административный персонал');
-INSERT INTO role (name, description) VALUES ('Clients', 'Клиенты');
-INSERT INTO role (name, description) VALUES ('Billing', 'Биллинг');
+INSERT INTO role (id, name, description) VALUES (1, 'Administration', 'Административный персонал');
+INSERT INTO role (id, name, description) VALUES (2, 'Clients', 'Клиенты');
+INSERT INTO role (id, name, description) VALUES (3, 'Billing', 'Биллинг');
 
 /*
 CREATE TABLE user_role_alternative

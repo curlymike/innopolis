@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Загружает конфигурацию приложения (Singleton|Одиночка)
+ */
+
 public class Config {
 
   private static final String PROPS_FILE = "/postgres.properties";

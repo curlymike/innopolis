@@ -9,7 +9,10 @@ import java.sql.*;
  * ДЗ_13
  *
  * 4) Перевести connection в ручное управление транзакциями
- *   b) Выполнить 2-3 SQL операции на ваше усмотрение (например, Insert в 3 таблицы – USER, ROLE, USER_ROLE) между sql операциями установить точку сохранения (SAVEPOINT A), намеренно ввести некорректные данные на последней операции, что бы транзакция откатилась к логической точке SAVEPOINT A
+ *   b) Выполнить 2-3 SQL операции на ваше усмотрение (например, Insert в 3 таблицы – USER, ROLE, USER_ROLE)
+ *      между sql операциями установить точку сохранения (SAVEPOINT A),
+ *      намеренно ввести некорректные данные на последней операции, чтобы
+ *      транзакция откатилась к логической точке SAVEPOINT A
  *
  */
 
@@ -35,8 +38,15 @@ public class Main {
 
   }
 
-  public static int task4aGetUserId(PreparedStatement psUser) throws SQLException {
-    try (ResultSet rs = psUser.getGeneratedKeys()) {
+  /**
+   * Достаёт id из PreparedStatement и возвращает значение
+   * @param ps - PreparedStatement
+   * @return значение поля id записи, созданной в результате выполнения PreparedStatement.
+   * @throws SQLException
+   */
+
+  public static int task4aGetUserId(PreparedStatement ps) throws SQLException {
+    try (ResultSet rs = ps.getGeneratedKeys()) {
       if (rs.next()) {
         return rs.getInt(1);
       }
@@ -45,7 +55,10 @@ public class Main {
   }
 
   /***
-   *
+   * После создания записи в таблице user выполняется запись
+   * в таблицу user_role и намеренно вызывается ошибка, что
+   * приводит к откату транзакции и запись о пользователе в
+   * таблице user не создаётся.
    */
 
   public static void task4b() {

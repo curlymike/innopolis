@@ -7,3 +7,6 @@
 настроить конфигурацию логера, что бы все логи записывались в БД, таблица LOGS,
 колонки ID, DATE, LOG_LEVEL, MESSAGE, EXCEPTION
 
+---
+
+:warning: SQL для создания таблицы logs дописан в ```part1/lesson16/task01/db_init.sql```

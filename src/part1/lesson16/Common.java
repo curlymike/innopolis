@@ -48,7 +48,7 @@ public class Common {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
-      LOG.info(String.format("deleteUserById(%d)", userId));
+      LOG.info("deleteUserById({})", userId);
 
       ps.setInt(1, userId);
       ps.execute();
@@ -69,7 +69,7 @@ public class Common {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
-      LOG.info(String.format("deleteUserByLoginId(%s)", loginId));
+      LOG.info("deleteUserByLoginId({})", loginId);
 
       ps.setString(1, loginId);
       ps.execute();

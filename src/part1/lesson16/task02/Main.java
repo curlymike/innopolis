@@ -50,7 +50,7 @@ public class Main {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
-      LOG.info(String.format("insertUser(): %s %s %s", "Homer J Simpson", "homer_j", "chunkylover53@aol.com"));
+      LOG.info("insertUser(): {} {} {}", "Homer J Simpson", "homer_j", "chunkylover53@aol.com");
 
       ps.setString(1, "Homer J Simpson");
       ps.setTimestamp(2, Timestamp.valueOf("1956-05-12 00:00:00"));

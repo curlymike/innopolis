@@ -44,7 +44,7 @@ public class Main {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
-      LOG.info(String.format("printUserByLoginAndName('%s', '%s')", loginId, name));
+      LOG.info("printUserByLoginAndName('{}', '{}')", loginId, name);
 
       ps.setString(1, loginId);
       ps.setString(2, name);

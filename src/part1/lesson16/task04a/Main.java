@@ -112,7 +112,7 @@ public class Main {
 
       } catch (SQLException e) {
         conn.rollback(savepoint);
-        LOG.info("task4a(): rollback");
+        LOG.info("task4a(): rollback"); // Info или Error? Или Trace?
         LOG.error(e);
       }
 

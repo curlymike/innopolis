@@ -42,13 +42,6 @@ public class Main {
 
   }
 
-  /**
-   * Достаёт id из PreparedStatement и возвращает значение
-   * @param ps - PreparedStatement
-   * @return значение поля id записи, созданной в результате выполнения PreparedStatement.
-   * @throws SQLException
-   */
-
   /***
    * После создания записи в таблице user выполняется запись
    * в таблицу user_role и намеренно вызывается ошибка, что
@@ -60,6 +53,8 @@ public class Main {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement psUser = conn.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
          PreparedStatement psRole = conn.prepareStatement(INSERT_ROLE_QUERY)) {
+
+      LOG.info("task4b()");
 
       conn.setAutoCommit(false);
       Savepoint savepoint = conn.setSavepoint();
@@ -88,14 +83,12 @@ public class Main {
 
       } catch (SQLException e) {
         conn.rollback(savepoint);
-        //e.printStackTrace();
-        System.out.println("------------------------");
-        System.out.println(e.getMessage());
-        System.out.println("------------------------");
+        LOG.info("task4b(): rollback"); // Info или Error? Или Trace?
+        LOG.error(e);
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 

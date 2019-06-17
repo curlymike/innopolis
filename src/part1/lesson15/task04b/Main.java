@@ -38,22 +38,6 @@ public class Main {
 
   }
 
-  /**
-   * Достаёт id из PreparedStatement и возвращает значение
-   * @param ps - PreparedStatement
-   * @return значение поля id записи, созданной в результате выполнения PreparedStatement.
-   * @throws SQLException
-   */
-
-  public static int task4aGetUserId(PreparedStatement ps) throws SQLException {
-    try (ResultSet rs = ps.getGeneratedKeys()) {
-      if (rs.next()) {
-        return rs.getInt(1);
-      }
-    }
-    throw new SQLException("Невозможно получить ID");
-  }
-
   /***
    * После создания записи в таблице user выполняется запись
    * в таблицу user_role и намеренно вызывается ошибка, что
@@ -78,7 +62,7 @@ public class Main {
         psUser.setString(6, "User number four");
         psUser.execute();
 
-        int userId = task4aGetUserId(psUser);
+        int userId = Common.getLastInsertId(psUser);
 
         psRole.setInt(1, userId);
         psRole.setInt(2, Common.ROLE_CLIENTS);

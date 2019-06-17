@@ -4,4 +4,6 @@ fiddle
 lib
 out
 practice
+target
+temp
 *.iml

@@ -1,5 +1,8 @@
 package part1.lesson16;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +13,8 @@ import java.sql.SQLException;
  */
 
 public class Common {
+
+  private static final Logger LOG = LogManager.getLogger(Common.class);
 
   public static final int ROLE_ADMINISTRATION = 1;
   public static final int ROLE_CLIENTS = 2;
@@ -43,11 +48,13 @@ public class Common {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
+      LOG.info(String.format("deleteUserById(%d)", userId));
+
       ps.setInt(1, userId);
       ps.execute();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 
@@ -62,11 +69,13 @@ public class Common {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
+      LOG.info(String.format("deleteUserByLoginId(%s)", loginId));
+
       ps.setString(1, loginId);
       ps.execute();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 
@@ -80,10 +89,12 @@ public class Common {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
+      LOG.info("deleteAllUsers()");
+
       ps.execute();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 
@@ -96,6 +107,8 @@ public class Common {
 
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
+
+      LOG.info("printUsers()");
 
       ps.execute();
 
@@ -113,7 +126,7 @@ public class Common {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 
@@ -130,6 +143,8 @@ public class Common {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
+      LOG.info("printRoles()");
+
       ps.execute();
 
       try (ResultSet rs = ps.getResultSet()) {
@@ -143,7 +158,7 @@ public class Common {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 
@@ -157,6 +172,8 @@ public class Common {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
+      LOG.info("countUsers()");
+
       ps.execute();
 
       try (ResultSet rs = ps.getResultSet()) {
@@ -166,7 +183,7 @@ public class Common {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 

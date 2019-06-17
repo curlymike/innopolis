@@ -17,6 +17,23 @@ public class Common {
   public static final int ROLE_CLIENTS = 2;
   public static final int ROLE_BILLING = 3;
 
+  /**
+   * Достаёт id из PreparedStatement и возвращает значение
+   * При помощи этого метода можно получить ID записи после INSERT операции
+   * @param ps - PreparedStatement
+   * @return значение поля id записи, созданной в результате выполнения PreparedStatement.
+   * @throws SQLException
+   */
+
+  public static int getLastInsertId(PreparedStatement ps) throws SQLException {
+    try (ResultSet rs = ps.getGeneratedKeys()) {
+      if (rs.next()) {
+        return rs.getInt(1);
+      }
+    }
+    throw new SQLException("Невозможно получить ID");
+  }
+
   /***
    * Удаляет пользователя по id (не используется, но оставил для примера)
    * @param userId

@@ -1,7 +1,9 @@
-package part1.lesson15.task04a;
+package part1.lesson16.task04a;
 
-import part1.lesson15.Common;
-import part1.lesson15.DBConnect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import part1.lesson16.Common;
+import part1.lesson16.DBConnect;
 
 import java.sql.*;
 
@@ -14,6 +16,8 @@ import java.sql.*;
  */
 
 public class Main {
+
+  private static final Logger LOG = LogManager.getLogger(Main.class);
 
   static final String INSERT_USER_QUERY = "INSERT INTO \"user\" (name, birthday, login_id, city, email, description) VALUES(?, ?, ?, ?, ?, ?)";
   static final String INSERT_ROLE_QUERY = "INSERT INTO user_role (user_id, role_id) VALUES(?, ?)";
@@ -52,6 +56,8 @@ public class Main {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement psUser = conn.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
          PreparedStatement psRole = conn.prepareStatement(INSERT_ROLE_QUERY)) {
+
+      LOG.info("task4a()");
 
       conn.setAutoCommit(false);
       Savepoint savepoint = conn.setSavepoint();
@@ -115,11 +121,12 @@ public class Main {
 
       } catch (SQLException e) {
         conn.rollback(savepoint);
-        e.printStackTrace();
+        LOG.info("task4a(): rollback");
+        LOG.error(e);
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 

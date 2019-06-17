@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- The status logger is used internally by log4j2 components. Setting status="debug" (or "trace") in the configuration will cause this internal logging to be output to the command line.
+     https://stackoverflow.com/questions/21065854/what-does-status-mean-in-log4j2-configuration -->
 <Configuration status="WARN">
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
+        <JDBC name="JDBCAppender" tableName="logs">
+            <ConnectionFactory class="part1.lesson16.DBConnect" method="getConnection" />
+            <Column name="date" isEventTimestamp="true" />
+            <Column name="log_level" pattern="%level" isUnicode="false" />
+            <Column name="message" pattern="%message" isUnicode="false" />
+            <Column name="exception" pattern="%ex{full}" isUnicode="false" />
+            <!--
+              Без isUnicode="false" не работает возникает исключение:
+              ERROR An exception occurred processing Appender JDBCAppender org.apache.logging.log4j.core.appender.db.DbAppenderLoggingException: Failed to insert record for log event in JDBC manager: Метод org.postgresql.jdbc.PgPreparedStatement.setNString(int, String) ещё не реализован
+              https://stackoverflow.com/questions/24242137/log4j2-jdbc-appender-issuefailed-to-insert-record
+            -->
+        </JDBC>
     </Appenders>
 
     <Loggers>
-        <Logger name= "ru.javastudy.examples.User" level="debug" additivity="true">
+        <!-- <Logger name= "ru.javastudy.examples.User" level="debug" additivity="true">
             <AppenderRef ref="Console"/>
-        </Logger>
+        </Logger> -->
 
         <!-- Root Logger -->
         <Root level="all">
             <AppenderRef ref="Console"/>
+            <AppenderRef ref="JDBCAppender" />
         </Root>
     </Loggers>
 

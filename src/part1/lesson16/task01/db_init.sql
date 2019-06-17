@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS role;
 DROP TYPE IF EXISTS roles;
+DROP TABLE IF EXISTS logs;
 
 -- Таблица USER содержит поля id, name, birthday, login_ID, city, email, description
 -- Таблица ROLE содержит поля id, name (принимает значения Administration, Clients, Billing), description
@@ -44,11 +45,17 @@ INSERT INTO role (id, name, description) VALUES (1, 'Administration', 'Адми�
 INSERT INTO role (id, name, description) VALUES (2, 'Clients', 'Клиенты');
 INSERT INTO role (id, name, description) VALUES (3, 'Billing', 'Биллинг');
 
-/*
-CREATE TABLE user_role_alternative
+---
+
+-- колонки ID, DATE, LOG_LEVEL, MESSAGE, EXCEPTION
+CREATE TABLE logs
 (
-  role_id          INTEGER,
-  user_id          INTEGER,
-  PRIMARY KEY(role_id, user_id)
+  id           SERIAL PRIMARY KEY,
+  date         TIMESTAMP DEFAULT now()  NOT NULL,
+  log_level    VARCHAR(64)              NOT NULL,
+  message      TEXT DEFAULT ''          NOT NULL,
+  exception    TEXT DEFAULT ''          NOT NULL
 );
-*/
+
+CREATE INDEX log_level ON logs (log_level);
+CREATE INDEX date ON logs (date);

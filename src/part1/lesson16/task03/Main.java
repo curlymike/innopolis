@@ -1,12 +1,14 @@
-package part1.lesson15.task03;
+package part1.lesson16.task03;
 
-import part1.lesson15.Common;
-import part1.lesson15.DBConnect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import part1.lesson16.Common;
+import part1.lesson16.DBConnect;
 
 import java.sql.*;
 
-import static part1.lesson15.task02.Main.insertUser;
-import static part1.lesson15.task02.Main.insertUsersBatch;
+import static part1.lesson16.task02.Main.insertUser;
+import static part1.lesson16.task02.Main.insertUsersBatch;
 
 /***
  * ДЗ_13
@@ -16,6 +18,8 @@ import static part1.lesson15.task02.Main.insertUsersBatch;
  */
 
 public class Main {
+
+  private static final Logger LOG = LogManager.getLogger(Main.class);
 
   public static void main(String[] args) throws Exception {
     DriverManager.registerDriver(new org.postgresql.Driver());
@@ -40,6 +44,8 @@ public class Main {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
 
+      LOG.info(String.format("printUserByLoginAndName(%s, %s)", loginId, name));
+
       ps.setString(1, loginId);
       ps.setString(2, name);
       ps.execute();
@@ -59,7 +65,7 @@ public class Main {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 

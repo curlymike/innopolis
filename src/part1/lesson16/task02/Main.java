@@ -1,8 +1,11 @@
-package part1.lesson15.task02;
+package part1.lesson16.task02;
 
-import part1.lesson15.Common;
-import part1.lesson15.DBConnect;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import part1.lesson16.Common;
+import part1.lesson16.DBConnect;
 
+import java.lang.invoke.MethodHandles;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -17,6 +20,8 @@ import java.time.LocalDateTime;
  */
 
 public class Main {
+
+  private static final Logger LOG = LogManager.getLogger(Main.class);
 
   static final String INSERT_USER_QUERY = "INSERT INTO \"user\" (name, birthday, login_id, city, email, description) VALUES(?, ?, ?, ?, ?, ?)";
 
@@ -34,7 +39,6 @@ public class Main {
     insertUsersBatch2();
     Common.printUsers();
 
-
   }
 
   /***
@@ -45,6 +49,9 @@ public class Main {
   public static int insertUser() {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(INSERT_USER_QUERY, Statement.RETURN_GENERATED_KEYS)) {
+
+      LOG.info(String.format("insertUser(): %s %s %s", "Homer J Simpson", "homer_j", "chunkylover53@aol.com"));
+
       ps.setString(1, "Homer J Simpson");
       ps.setTimestamp(2, Timestamp.valueOf("1956-05-12 00:00:00"));
       ps.setString(3, "homer_j");
@@ -58,7 +65,7 @@ public class Main {
         }
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
     return -1;
   }
@@ -70,6 +77,8 @@ public class Main {
   public static void insertUsersBatch() {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(INSERT_USER_QUERY)) {
+
+      LOG.info("insertUsersBatch()");
 
       conn.setAutoCommit(false);
 
@@ -102,7 +111,7 @@ public class Main {
       conn.commit();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 
@@ -113,6 +122,8 @@ public class Main {
   public static void insertUsersBatch2() {
     try (Connection conn = DBConnect.getConnection();
          PreparedStatement ps = conn.prepareStatement(INSERT_USER_QUERY)) {
+
+      LOG.info("insertUsersBatch2()");
 
       conn.setAutoCommit(false);
 
@@ -138,7 +149,7 @@ public class Main {
       conn.commit();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      LOG.error(e);
     }
   }
 

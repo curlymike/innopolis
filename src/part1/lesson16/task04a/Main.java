@@ -39,15 +39,6 @@ public class Main {
 
   }
 
-  public static int task4aGetUserId(PreparedStatement psUser) throws SQLException {
-    try (ResultSet rs = psUser.getGeneratedKeys()) {
-      if (rs.next()) {
-        return rs.getInt(1);
-      }
-    }
-    throw new SQLException("Невозможно получить ID");
-  }
-
   /***
    *
    */
@@ -71,7 +62,7 @@ public class Main {
         psUser.setString(6, "User number four");
         psUser.execute();
 
-        psRole.setInt(1, task4aGetUserId(psUser));
+        psRole.setInt(1, Common.getLastInsertId(psUser));
         psRole.setInt(2, Common.ROLE_CLIENTS);
         psRole.execute();
 
@@ -83,7 +74,7 @@ public class Main {
         psUser.setString(6, "User number five");
         psUser.execute();
 
-        psRole.setInt(1, task4aGetUserId(psUser));
+        psRole.setInt(1, Common.getLastInsertId(psUser));
         psRole.setInt(2, Common.ROLE_CLIENTS);
         psRole.execute();
 
@@ -95,7 +86,7 @@ public class Main {
         psUser.setString(6, "Admin number one");
         psUser.execute();
 
-        psRole.setInt(1, task4aGetUserId(psUser));
+        psRole.setInt(1, Common.getLastInsertId(psUser));
         psRole.setInt(2, Common.ROLE_ADMINISTRATION);
         psRole.execute();
 
@@ -107,7 +98,7 @@ public class Main {
         psUser.setString(6, "Admin number two, also has Billing role");
         psUser.execute();
 
-        int userId = task4aGetUserId(psUser);
+        int userId = Common.getLastInsertId(psUser);
 
         psRole.setInt(1, userId);
         psRole.setInt(2, Common.ROLE_ADMINISTRATION);

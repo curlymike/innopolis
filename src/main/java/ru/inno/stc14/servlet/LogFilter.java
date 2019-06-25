@@ -1,10 +1,12 @@
 package ru.inno.stc14.servlet;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+@WebFilter(filterName = "logFilter", urlPatterns = "/*")
 public class LogFilter implements Filter {
     private Logger logger = Logger.getLogger(LogFilter.class.getName());
 

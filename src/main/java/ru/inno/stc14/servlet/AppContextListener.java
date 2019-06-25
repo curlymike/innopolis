@@ -6,11 +6,13 @@ import ru.inno.stc14.dao.jdbc.DBConnectionManager;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@WebListener
 public class AppContextListener implements ServletContextListener {
     private Logger logger = Logger.getLogger(AppContextListener.class.getName());
     @Override

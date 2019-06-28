@@ -23,6 +23,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public Person getPerson(String login, String pass) {
+        return personDAO.getPerson(login, pass);
+    }
+
+    @Override
     public List<Person> getList() {
         return personDAO.getList();
     }

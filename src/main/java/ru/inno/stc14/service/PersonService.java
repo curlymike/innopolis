@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface PersonService {
 
+    Person getPerson(String login, String pass);
+
     List<Person> getList();
 
     boolean addPerson(String name, String birth);

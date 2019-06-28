@@ -10,5 +10,7 @@
     <li><a href="${pageContext.request.contextPath}/person/list">List students</a></li>
     <li><a href="${pageContext.request.contextPath}/person">New student</a></li>
 </ul>
+<p>&nbsp;</p>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

@@ -20,10 +20,9 @@
         <td><%=person.getName()%></td>
         <td><%=person.getBirthDate()%></td>
     </tr>
-    <br>
     <% } %>
 </table>
-<br>
-<a href="/">Main page</a>
+<p>&nbsp;</p>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

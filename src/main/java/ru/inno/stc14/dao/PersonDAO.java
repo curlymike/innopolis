@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface PersonDAO {
 
+    Person getPerson(String login, String pass);
+
     List<Person> getList();
 
     boolean addPerson(Person person);

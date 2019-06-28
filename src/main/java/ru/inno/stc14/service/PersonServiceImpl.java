@@ -3,7 +3,6 @@ package ru.inno.stc14.service;
 import ru.inno.stc14.dao.PersonDAO;
 import ru.inno.stc14.dao.jdbc.PersonDAOImpl;
 import ru.inno.stc14.entity.Person;
-import ru.inno.stc14.servlet.AppContextListener;
 
 import java.sql.Connection;
 import java.text.DateFormat;
@@ -20,6 +19,11 @@ public class PersonServiceImpl implements PersonService {
 
     public PersonServiceImpl(Connection con) {
         personDAO = new PersonDAOImpl(con);
+    }
+
+    @Override
+    public Person getPerson(String login, String pass) {
+        return personDAO.getPerson(login, pass);
     }
 
     @Override

@@ -2,7 +2,9 @@ package ru.inno.stc14.dao.jdbc;
 
 import ru.inno.stc14.dao.PersonDAO;
 import ru.inno.stc14.entity.Person;
+import ru.inno.stc14.util.Util;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,28 @@ public class PersonDAOImpl implements PersonDAO {
             "insert into person (name, birth_date) values (?, ?)";
     private static final String SELECT_PERSON_SQL_TEMPLATE =
             "select id, name, birth_date from person";
+    private static final String SELECT_PERSON_BY_PASSWORD_SQL_TEMPLATE =
+        "SELECT id, name, birth_date, login FROM person WHERE login = ? AND pass = ?";
+
+    @Override
+    public Person getPerson(String login, String pass) {
+        Person person = null;
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_PERSON_BY_PASSWORD_SQL_TEMPLATE)) {
+            statement.setString(1, login);
+            statement.setString(2, Util.hash(pass));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    person = new Person();
+                    person.setId(resultSet.getInt(1));
+                    person.setName(resultSet.getString(2));
+                    person.setBirthDate(new Date(resultSet.getLong(3)));
+                }
+            }
+        } catch (SQLException | NoSuchAlgorithmException e) {
+            logger.log(Level.SEVERE, "An exception occurred on the DAO layer.", e);
+        }
+        return person;
+    }
 
     @Override
     public List<Person> getList() {

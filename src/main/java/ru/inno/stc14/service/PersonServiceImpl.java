@@ -3,7 +3,6 @@ package ru.inno.stc14.service;
 import ru.inno.stc14.dao.PersonDAO;
 import ru.inno.stc14.dao.jdbc.PersonDAOImpl;
 import ru.inno.stc14.entity.Person;
-import ru.inno.stc14.servlet.AppContextListener;
 
 import java.sql.Connection;
 import java.text.DateFormat;

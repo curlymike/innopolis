@@ -1,5 +1,9 @@
 package ru.inno.stc14.servlet.navigation;
 
+/**
+ * Этот класс представляет собо элемент навигационного меню
+ */
+
 public class Item {
   private String label;
   private String path;

@@ -28,7 +28,6 @@ public class ListPersonServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Person> res = person.getList();
         req.setAttribute("persons", res);
-        req.getRequestDispatcher("/persons.jsp")
-                .forward(req, resp);
+        req.getRequestDispatcher("/persons.jsp").forward(req, resp);
     }
 }

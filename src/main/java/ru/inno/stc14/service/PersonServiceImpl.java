@@ -1,9 +1,12 @@
 package ru.inno.stc14.service;
 
 import ru.inno.stc14.dao.PersonDAO;
+import ru.inno.stc14.dao.jdbc.LoginExistException;
 import ru.inno.stc14.dao.jdbc.PersonDAOImpl;
 import ru.inno.stc14.entity.Person;
+import ru.inno.stc14.util.Util;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,13 +35,30 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean addPerson(String name, String birth) {
+    public boolean addPerson(String name, String birth, String login, String email, String phone, String password) {
         Person person = new Person();
         person.setName(name);
 
         Date date = safeParseDate(birth);
         person.setBirthDate(date);
-        return personDAO.addPerson(person);
+
+        person.setLogin(login);
+        person.setEmail(email);
+        person.setPhone(phone);
+
+        try {
+            person.setPassword(Util.hash(password));
+        } catch (NoSuchAlgorithmException e) {
+            logger.log(Level.SEVERE, "Unable to hash password", e);
+            throw new ServiceException("Внутренняя ошибка сервиса", e);
+        }
+
+        try {
+            return personDAO.addPerson(person);
+        } catch (LoginExistException e) {
+            logger.log(Level.SEVERE, "Ошибка", e);
+            throw new ServiceException("Логин уже занят", e);
+        }
     }
 
     private Date safeParseDate(String birthStr) {
@@ -47,7 +67,7 @@ public class PersonServiceImpl implements PersonService {
             return format.parse(birthStr);
         } catch (ParseException e) {
             logger.log(Level.SEVERE, "Date parsing error", e);
-            throw new RuntimeException(e);
+            throw new ServiceException("Неверный формат даты", e);
         }
     }
 

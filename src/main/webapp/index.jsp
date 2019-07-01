@@ -1,16 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Students</title>
-    <meta charset="UTF-8"/>
-</head>
-<body>
-<h1>Students</h1>
+<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<t:layout title="Main page">
 <ul>
-    <li><a href="${pageContext.request.contextPath}/person/list">List students</a></li>
-    <li><a href="${pageContext.request.contextPath}/person">New student</a></li>
+    <li><a href="person/list">List students</a></li>
+    <li><a href="person">New student</a></li>
 </ul>
-<p>&nbsp;</p>
-<jsp:include page="footer.jsp" />
-</body>
-</html>
+</t:layout>

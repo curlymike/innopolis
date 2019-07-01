@@ -28,6 +28,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("destination", Util.notEmptyOrDefault(req.getParameter("destination"), ""));
         req.getRequestDispatcher("/loginForm.jsp").forward(req, resp);
     }
 

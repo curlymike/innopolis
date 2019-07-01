@@ -25,8 +25,8 @@ public class SecurityFilter implements Filter {
     HttpServletResponse response = (HttpServletResponse) servletResponse;
     String servletPath = request.getServletPath();
 
-    if (servletPath.equals("/login")) {
-      filterChain.doFilter(request, response);
+    if (servletPath.startsWith("/static") || servletPath.equals("/login")) {
+      filterChain.doFilter(servletRequest, servletResponse);
       return;
     }
 

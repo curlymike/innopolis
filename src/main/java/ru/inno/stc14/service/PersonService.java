@@ -10,5 +10,5 @@ public interface PersonService {
 
     List<Person> getList();
 
-    boolean addPerson(String name, String birth);
+    boolean addPerson(String name, String birth, String login, String email, String phone, String password);
 }

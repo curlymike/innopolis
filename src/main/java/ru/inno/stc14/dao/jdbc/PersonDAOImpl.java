@@ -95,6 +95,9 @@ public class PersonDAOImpl implements PersonDAO {
             return true;
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "An exception occurred on the DAO layer.", e);
+            if ("23505".equals(e.getSQLState())) {
+                throw new LoginExistException("Логин уже занят.", e);
+            }
             return false;
         }
     }

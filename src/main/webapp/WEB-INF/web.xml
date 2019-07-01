@@ -16,10 +16,6 @@
         <param-name>dbURL</param-name>
         <param-value>jdbc:h2:mem:students</param-value>
     </context-param>
-    <context-param>
-        <param-name>trimDirectiveWhitespaces</param-name>
-        <param-value>true</param-value>
-    </context-param>
 
     <error-page>
         <error-code>404</error-code>

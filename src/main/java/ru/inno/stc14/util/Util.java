@@ -31,8 +31,8 @@ public class Util {
 
   public static void setMessage(HttpServletRequest req, String message, StatusMessage.Type type) {
     HttpSession session = req.getSession();
-    // JSP проставит на 1 когда отпечатает сообщения
-    // и MessageFilter очистит список.
+    // JSP проставит атрибут "messagesprinted" на 1 когда
+    // отпечатает сообщения и MessageFilter очистит список.
     session.setAttribute("messagesprinted", 0);
     if (session.getAttribute("messages") == null) {
       session.setAttribute("messages", new ArrayList<StatusMessage>());

@@ -2,4 +2,5 @@
 data
 lib
 out
+temp
 *.iml
